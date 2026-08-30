@@ -14,3 +14,4 @@ Actions cron — see <code>scripts/</code> and <code>.github/workflows/</code>.<
 
 <!-- badge automation: pr 1 -->
 <!-- badge automation: pr 2 -->
+<!-- pair extraordinaire -->
