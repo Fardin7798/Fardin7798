@@ -1468,11 +1468,15 @@
     {
       "date": "2026-09-01",
       "level": 4
+    },
+    {
+      "date": "2026-09-02",
+      "level": 2
     }
   ],
   "stats": {
-    "current_streak": 3,
-    "longest_streak": 3,
-    "active_days": 7
+    "current_streak": 4,
+    "longest_streak": 4,
+    "active_days": 8
   }
 }
