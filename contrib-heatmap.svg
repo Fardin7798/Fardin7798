@@ -374,5 +374,6 @@
 <rect class="cell" x="748" y="34" width="11" height="11" rx="2" ry="2" fill="#161b22" style="animation-delay:0.636s"/>
 <rect class="cell" x="748" y="48" width="11" height="11" rx="2" ry="2" fill="#161b22" style="animation-delay:0.648s"/>
 <rect class="cell" x="748" y="62" width="11" height="11" rx="2" ry="2" fill="#161b22" style="animation-delay:0.660s"/>
-<rect class="cell" x="748" y="76" width="11" height="11" rx="2" ry="2" fill="#161b22" style="animation-delay:0.672s"/>
+<rect class="cell" x="748" y="76" width="11" height="11" rx="2" ry="2" fill="#006d32" style="animation-delay:0.672s"/>
+<rect class="cell" x="748" y="90" width="11" height="11" rx="2" ry="2" fill="#26a641" style="animation-delay:0.684s"/>
 </svg>
