@@ -1,10 +1,11 @@
-"""Builds the clickable Open Source Contributions section of the profile README.
+"""Builds the clickable Contributions section of the profile README.
 
 GitHub shows SVGs as plain images, so links inside an SVG don't work. This script
-draws each piece (badges, repo cards, PR rows, buttons) as its own small SVG in
-contrib/, wraps each one in a link in README.md between the CONTRIB markers, and
-writes CONTRIBUTIONS.md with every repo and PR. Runs daily from
-.github/workflows/contributions.yml. Standard library only.
+draws each piece (stat tiles, section headers, repo cards, PR rows) as its own
+small SVG in a light and a dark version (contrib/light, contrib/dark), wraps each
+one in a link plus a <picture> that follows the visitor's theme, writes that into
+README.md between the CONTRIB markers, and writes CONTRIBUTIONS.md with every repo
+and PR. Runs daily from .github/workflows/contributions.yml. Standard library only.
 """
 import base64
 import datetime as dt
@@ -12,23 +13,64 @@ import glob
 import json
 import os
 import re
+import shutil
 import urllib.parse
 import urllib.request
 from xml.sax.saxutils import escape
 
 USER = os.environ.get("GH_USER", "Fardin7798")
 TOKEN = os.environ.get("GITHUB_TOKEN", "")
-TOP_REPOS = 4
-RECENT = 6
+TOP_REPOS = 3
+RECENT = 4
+MAX_MERGED = 3
 DIR = "contrib"
 IST = dt.timezone(dt.timedelta(hours=5, minutes=30))
+SEE_ALL = "./CONTRIBUTIONS.md"
 
-FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif"
-TXT, MUT, BOR, CARD, BG = "#e6edf3", "#8b949e", "#30363d", "#161b22", "#0d1117"
-PUR, GRN, BLU, YEL, RED = "#a371f7", "#3fb950", "#58a6ff", "#d29922", "#f85149"
+FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif"
+THEMES = {
+    "light": dict(bg="#ffffff", bd="#d1d9e0", tx="#1f2328", mu="#59636e", pu="#8250df", gr="#1a7f37", ln="#0969da"),
+    "dark": dict(bg="#0d1117", bd="#3d444d", tx="#f0f6fc", mu="#9198a1", pu="#ab7df8", gr="#3fb950", ln="#4493f8"),
+}
+LANG = {"Python": "#3572A5", "TypeScript": "#3178c6", "JavaScript": "#f1e05a", "Rust": "#dea584", "Go": "#00ADD8",
+        "Java": "#b07219", "Kotlin": "#A97BFF", "Dart": "#00B4AB", "C++": "#f34b7d", "C": "#555555", "C#": "#178600",
+        "HTML": "#e34c26", "CSS": "#663399", "Swift": "#F05138", "Ruby": "#701516", "PHP": "#4F5D95", "Vue": "#41b883",
+        "Svelte": "#ff3e00", "Shell": "#89e051", "Jupyter Notebook": "#DA5B0B", "MDX": "#fcb32c"}
+
+# Character widths (1/1000 em) for ASCII 32..126, Helvetica/Arial metrics, used to keep text inside its box.
+_R = [278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584]
+_B = [278, 333, 474, 556, 556, 889, 722, 238, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 333, 333, 584, 584, 584, 611, 975, 722, 722, 722, 722, 667, 611, 778, 722, 278, 556, 722, 611, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 333, 278, 333, 584, 556, 333, 556, 611, 556, 611, 556, 333, 611, 611, 278, 278, 556, 278, 889, 611, 611, 611, 611, 389, 556, 333, 611, 556, 778, 556, 556, 500, 389, 280, 389, 584]
+
+ICON_MERGE = "M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM5 3.25a.75.75 0 1 0 0 .005V3.25Z"
+ICON_PR = "M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354ZM3.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm0 9.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Zm8.25.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Z"
+ICON_STAR = "M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"
 
 
-def get(url, raw=False):
+def width(s, size, bold=False):
+    t = _B if bold else _R
+    return sum(t[ord(c) - 32] if 32 <= ord(c) < 127 else 600 for c in s) * size / 1000 * 1.2
+
+
+def fit(s, size, maxw, bold=False):
+    if width(s, size, bold) <= maxw:
+        return s
+    while s and width(s + "…", size, bold) > maxw:
+        s = s[:-1]
+    return s.rstrip() + "…"
+
+
+def get(url, raw=False, tries=3):
+    for i in range(tries):
+        try:
+            return _get(url, raw)
+        except Exception:
+            if i == tries - 1:
+                raise
+            import time
+            time.sleep(2 * (i + 1))
+
+
+def _get(url, raw=False):
     req = urllib.request.Request(url, headers={"User-Agent": USER, "Accept": "application/vnd.github+json"})
     if TOKEN and "api.github.com" in url:
         req.add_header("Authorization", f"Bearer {TOKEN}")
@@ -54,11 +96,10 @@ def fetch_prs():
 
 
 def short(n):
-    return f"{n/1000:.1f}k" if n >= 1000 else str(n)
-
-
-def clip(s, n):
-    return s if len(s) <= n else s[: n - 1].rstrip() + "…"
+    if n >= 1000:
+        v = n / 1000
+        return f"{v:.0f}k" if v >= 100 else f"{v:.1f}k"
+    return str(n)
 
 
 def day(iso):
@@ -67,130 +108,153 @@ def day(iso):
 
 def avatar(url):
     try:
-        data = get(url + ("&" if "?" in url else "?") + "s=88", raw=True)
+        data = get(url + ("&" if "?" in url else "?") + "s=64", raw=True)
         mime = "image/png" if data[:4] == b"\x89PNG" else "image/jpeg"
         return f"data:{mime};base64," + base64.b64encode(data).decode()
     except Exception:
         return ""
 
 
-def T(x, y, s, size, color=TXT, weight=400, anchor="start"):
-    return (f'<text x="{x}" y="{y}" font-size="{size}" fill="{color}" font-weight="{weight}" '
+LABELS = [("a11y", "Accessibility"), ("accessib", "Accessibility"), ("feat", "Feature"), ("fix", "Fix"),
+          ("docs", "Docs"), ("content", "Content"), ("perf", "Performance"), ("refactor", "Refactor"),
+          ("test", "Tests"), ("chore", "Chore"), ("style", "Style")]
+
+
+def label_and_title(raw):
+    """'fix(menu): ask for x (note)' -> ('Fix', 'Ask for x'). Accessibility wins when the title mentions it."""
+    m = re.match(r"^\s*([a-zA-Z]+)(\([^)]*\))?!?:\s*(.+)$", raw)
+    prefix, title = (m.group(1).lower(), m.group(3)) if m else ("", raw)
+    title = re.sub(r"\s*\([^)]*\)\s*$", "", title).strip() or title
+    title = re.sub(r"\ba11y\b", "accessibility", title)
+    title = title[:1].upper() + title[1:]
+    low = raw.lower()
+    label = ""
+    if "a11y" in low or "accessib" in low:
+        label = "Accessibility"
+    else:
+        for key, name in LABELS:
+            if prefix.startswith(key):
+                label = name
+                break
+        if not label:
+            first = title.split()[0].lower() if title.split() else ""
+            if first in ("add", "offer", "support", "allow", "implement", "introduce"):
+                label = "Feature"
+            elif first in ("fix", "keep", "handle", "prevent", "correct", "resolve"):
+                label = "Fix"
+    return label, title
+
+
+def svg(w, h, body, c, border=True):
+    rect = (f'<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="6" fill="{c["bg"]}" stroke="{c["bd"]}"/>'
+            if border else f'<rect width="{w}" height="{h}" fill="{c["bg"]}"/>')
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
+            f'font-family="{FONT}">{rect}{body}</svg>')
+
+
+def T(x, y, s, size, color, weight=400, anchor="start"):
+    return (f'<text x="{x:.1f}" y="{y}" font-size="{size}" fill="{color}" font-weight="{weight}" '
             f'text-anchor="{anchor}">{escape(str(s))}</text>')
 
 
-CSS = (
-    "@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}"
-    "@keyframes left{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}"
-    "@keyframes pop{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}"
-    "@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}"
-    "@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}"
-    "@keyframes flash{0%,99%{opacity:1}100%{opacity:0}}"
-    "@keyframes stay{to{opacity:1}}"
-    ".fx{transform-box:fill-box;transform-origin:center}"
-    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.fx,.fin{opacity:1!important}.num{display:none}}"
-)
+def icon(path, x, y, color, scale=1.0):
+    return f'<path transform="translate({x} {y}) scale({scale})" fill="{color}" d="{path}"/>'
 
 
-def anim(name, dur, delay=0, extra="ease-out", count="1", fill="both"):
-    return f'style="animation:{name} {dur}s {extra} {delay:.2f}s {count} {fill}"'
+def save(name, w, h, build, border=True):
+    """build(c) -> svg body. Writes light + dark copies and returns a <picture> tag."""
+    for theme, c in THEMES.items():
+        with open(f"{DIR}/{theme}/{name}", "w", encoding="utf-8") as f:
+            f.write(svg(w, h, build(c), c, border))
+    return name
 
 
-def save(name, w, h, body, bg=True, enter="up", delay=0.0):
-    rect = f'<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="8" fill="{CARD}" stroke="{BOR}"/>' if bg else ""
-    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
-           f'font-family="{FONT}"><style>{CSS}</style>'
-           f'<g class="fx" {anim(enter, 0.6, delay)}>{rect}{body}</g></svg>')
-    with open(f"{DIR}/{name}", "w", encoding="utf-8") as f:
-        f.write(svg)
-    return f"{DIR}/{name}"
+def pic(name, alt, attr):
+    return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="{DIR}/dark/{name}" />'
+            f'<img src="{DIR}/light/{name}" {attr} alt="{escape(alt)}" /></picture>')
 
 
-def count_up(x, y, val, size, color, weight=700, anchor="middle", start=0.4, total=0.9):
-    """Number that counts 0 -> val. Falls back to a plain number for big values."""
-    if not isinstance(val, int) or val > 60 or val < 1:
-        return T(x, y, val, size, color, weight, anchor)
-    step = total / (val + 1)
-    out = []
-    for k in range(val + 1):
-        last = k == val
-        st = (f'style="opacity:0;animation:{"stay" if last else "flash"} {step if not last else 0.01:.3f}s linear '
-              f'{start + k * step:.3f}s 1 forwards"')
-        cls = "fin" if last else "num"
-        out.append(f'<text class="{cls}" {st} x="{x}" y="{y}" font-size="{size}" fill="{color}" '
-                   f'font-weight="{weight}" text-anchor="{anchor}">{k}</text>')
-    return "".join(out)
+def link(url, name, alt, attr):
+    return f'<a href="{url}">{pic(name, alt, attr)}</a>'
 
 
-def heading(name, title, right=""):
-    body = f'<rect width="1000" height="56" rx="8" fill="{BG}"/>' + T(4, 38, title, 22, weight=700)
-    if right:
-        body += T(996, 38, right, 13, MUT, anchor="end")
-    return save(name, 1000, 56, body, bg=False)
+# ---------- pieces ----------
+
+def tile(name, value, label, color_key):
+    def b(c):
+        col = c[color_key] if color_key else c["tx"]
+        return T(20, 46, value, 30, col, 600) + T(20, 70, label, 13, c["mu"])
+    return save(name, 200, 92, b)
 
 
-def badge(name, label, val, col, i=0):
-    lw, vw = len(label) * 8.6 + 24, len(str(val)) * 8.6 + 24
-    w = int(lw + vw)
-    body = (f'<clipPath id="r"><rect width="{w}" height="28" rx="4"/></clipPath><g clip-path="url(#r)">'
-            f'<rect width="{lw}" height="28" fill="#555"/><rect x="{lw}" width="{vw}" height="28" fill="{col}"/></g>'
-            + T(lw / 2, 19, label, 11, "#fff", 700, "middle")
-            + count_up(lw + vw / 2, 19, val, 11, "#fff", start=0.35 + i * 0.12))
-    return save(name, w, 28, body, bg=False, enter="pop", delay=i * 0.12), w
+def header(name, title, right=""):
+    def b(c):
+        out = T(1, 26, title, 16, c["tx"], 600)
+        if right:
+            out += T(999, 26, right + " →", 14, c["ln"], 400, "end")
+        return out
+    return save(name, 1000, 38, b, border=False)
 
 
-def repo_card(name, r, i=0):
-    w, h = 490, 84
-    d = i * 0.12
+def repo_card(name, r):
     owner, rn = r["name"].split("/")
-    body = f'<clipPath id="c"><circle cx="40" cy="42" r="22"/></clipPath>'
-    av = (f'<image href="{r["img"]}" x="18" y="20" width="44" height="44" clip-path="url(#c)"/>' if r.get("img")
-          else f'<circle cx="40" cy="42" r="22" fill="{BOR}"/>')
-    body += f'<g class="fx" {anim("pop", 0.5, d + 0.25)}>{av}</g>'
-    body += (f'<text x="76" y="36" font-size="13" fill="{MUT}">{escape(clip(owner, 16))} / '
-             f'<tspan font-size="14" fill="{BLU}" font-weight="700">{escape(clip(rn, 22))}</tspan></text>')
-    sx = 76 + (len(short(r["stars"])) + 2) * 8 + 18
-    body += f'<g class="fx" {anim("pulse", 2.4, d + 1, "ease-in-out", "infinite", "none")}>' + T(76, 64, "★", 13, YEL) + "</g>"
-    body += T(90, 64, short(r["stars"]), 13, YEL)
-    body += T(sx, 64, f"{r['prs']} PR{'s' if r['prs'] > 1 else ''}", 13, MUT)
-    tag, col = (f"{r['merged']} merged", PUR) if r["merged"] else (("open", GRN) if r["open"] else ("closed", MUT))
-    pw = len(tag) * 8 + 22
-    body += (f'<g class="fx" {anim("pop", 0.5, d + 0.45)}>'
-             f'<rect x="{w-18-pw}" y="28" width="{pw}" height="26" rx="13" fill="none" stroke="{col}"/>'
-             + T(w - 18 - pw / 2, 46, tag, 12, col, 700, "middle") + "</g>")
-    return save(name, w, h, body, delay=d)
+    owner_s = fit(owner, 13, 110)
+    rn_s = fit(rn, 13, 290 - 50 - width(owner_s + " / ", 13), True)
+
+    def b(c):
+        out = f'<clipPath id="a"><circle cx="30" cy="30" r="10"/></clipPath>'
+        out += (f'<image href="{r["img"]}" x="20" y="20" width="20" height="20" clip-path="url(#a)"/>' if r.get("img")
+                else f'<circle cx="30" cy="30" r="10" fill="{c["bd"]}"/>')
+        out += (f'<circle cx="30" cy="30" r="10" fill="none" stroke="{c["bd"]}" stroke-width="0.5"/>'
+                f'<text x="48" y="35" font-size="13" fill="{c["mu"]}">{escape(owner_s)} / '
+                f'<tspan fill="{c["ln"]}" font-weight="600">{escape(rn_s)}</tspan></text>')
+        x = 20
+        if r.get("lang"):
+            out += f'<circle cx="{x+5}" cy="63" r="5" fill="{LANG.get(r["lang"], "#8b949e")}"/>'
+            out += T(x + 15, 67, r["lang"], 12, c["mu"])
+            x += 15 + width(r["lang"], 12) + 14
+        out += icon(ICON_STAR, x, 56, c["mu"], 0.8125) + T(x + 18, 67, short(r["stars"]), 12, c["mu"])
+        x += 18 + width(short(r["stars"]), 12) + 14
+        out += T(x, 67, f"{r['prs']} PR{'s' if r['prs'] > 1 else ''}", 12, c["mu"])
+        return out
+    return save(name, 320, 88, b)
 
 
-def pr_row(name, p, i=0):
-    w, h = 1000, 48
-    d = i * 0.08
-    st, col, sym = ("Merged", PUR, "◆") if p["merged"] else (("Open", GRN, "●") if p["state"] == "open" else ("Closed", RED, "✕"))
-    dot = T(18, 30, sym, 13, col, 700)
-    if st == "Open":
-        dot = f'<g class="fx" {anim("pulse", 1.8, d + 0.8, "ease-in-out", "infinite", "none")}>{dot}</g>'
-    body = (dot + T(36, 30, st, 13, col, 700) + T(140, 30, clip(p["title"], 54), 13, BLU)
-            + T(610, 30, clip(p["repo"], 30), 12, MUT) + T(982, 30, day(p["created_at"]), 12, MUT, anchor="end"))
-    return save(name, w, h, body, enter="left", delay=d)
+def pr_row(name, p):
+    label, title = label_and_title(p["title"])
+    num = f'#{p["number"]}'
+    tag_w = width(label, 12) + 16 if label else 0
+    tag_right = 652
+    title_max = (tag_right - tag_w - 12 if label else 660) - 48 - width(" " + num, 14)
+    title_s = fit(title, 14, title_max, True)
+    repo_s = fit(p["repo"], 12, 190)
 
-
-def button(name, label):
-    w = int(len(label) * 8 + 56)
-    body = T(20, 23, label, 13, BLU, 700)
-    body += f'<g class="fx" {anim("nudge", 1.4, 1, "ease-in-out", "infinite", "none")}>' + T(w - 22, 23, "→", 14, BLU, 700, "end") + "</g>"
-    return save(name, w, 36, body, delay=0.2), w
+    def b(c):
+        col = c["pu"] if p["merged"] else c["gr"]
+        out = icon(ICON_MERGE if p["merged"] else ICON_PR, 18, 14, col)
+        out += (f'<text x="46" y="27" font-size="14" fill="{c["tx"]}" font-weight="600">{escape(title_s)}'
+                f'<tspan fill="{c["mu"]}" font-weight="400"> {num}</tspan></text>')
+        if label:
+            x = tag_right - tag_w
+            out += (f'<rect x="{x:.1f}" y="11" width="{tag_w:.1f}" height="20" rx="10" fill="none" stroke="{c["bd"]}"/>'
+                    + T(x + tag_w / 2, 25, label, 12, c["mu"], 500, "middle"))
+        out += T(676, 26, repo_s, 12, c["mu"]) + T(982, 26, day(p["created_at"]), 12, c["mu"], anchor="end")
+        return out
+    return save(name, 1000, 42, b)
 
 
 def main():
-    os.makedirs(DIR, exist_ok=True)
-    for f in glob.glob(f"{DIR}/*.svg"):
-        os.remove(f)
+    if os.path.isdir(DIR):
+        shutil.rmtree(DIR)
+    for t in THEMES:
+        os.makedirs(f"{DIR}/{t}", exist_ok=True)
 
     prs = fetch_prs()
     for p in prs:
         p["merged"] = bool((p.get("pull_request") or {}).get("merged_at"))
         p["repo"] = p["repository_url"].split("/repos/")[1]
-    merged = sum(p["merged"] for p in prs)
-    open_ = sum(p["state"] == "open" for p in prs)
+    merged_prs = sorted([p for p in prs if p["merged"]], key=lambda p: p["created_at"], reverse=True)
+    open_prs = sorted([p for p in prs if p["state"] == "open"], key=lambda p: p["created_at"], reverse=True)
 
     repos = {}
     for p in prs:
@@ -202,78 +266,75 @@ def main():
         try:
             info = get(f"https://api.github.com/repos/{r['name']}")
             r["stars"] = info.get("stargazers_count", 0)
+            r["lang"] = info.get("language") or ""
             r["avatar"] = info.get("owner", {}).get("avatar_url", "")
         except Exception:
-            r["stars"], r["avatar"] = 0, ""
+            r["stars"], r["lang"], r["avatar"] = 0, "", ""
+    total_stars = sum(r["stars"] for r in repos.values())
     active = [r for r in repos.values() if r["merged"] or r["open"]] or list(repos.values())
     top = sorted(active, key=lambda r: -r["stars"])[:TOP_REPOS]
     for r in top:
         r["img"] = avatar(r["avatar"]) if r["avatar"] else ""
 
-    recent = sorted([p for p in prs if p["state"] == "open" or p["merged"]],
-                    key=lambda p: p["created_at"], reverse=True)[:RECENT]
     today = dt.datetime.now(IST).strftime("%-d %b %Y")
-    see_all = "./CONTRIBUTIONS.md"
+    md = ["## Contributions", "Fixes and features for open-source projects I use."]
 
-    md = []
-    md.append(f'<img src="{heading("title.svg", "Open Source Contributions")}" width="100%" alt="Open Source Contributions" />')
-    links = []
-    for i, (label, val, col, url) in enumerate([
-            ("MERGED PRS", merged, PUR, search_url("is:merged")),
-            ("OPEN PRS", open_, GRN, search_url("is:open")),
-            ("REPOS", len(repos), BLU, see_all),
-            ("TOTAL PRS", len(prs), "#6e7681", search_url())]):
-        path, w = badge(f"badge-{i}.svg", label, val, col, i)
-        links.append(f'<a href="{url}"><img src="{path}" height="28" alt="{label}: {val}" /></a>')
-    md.append("<p>\n" + "\n".join(links) + "\n</p>")
+    tiles = [
+        ("PRs", str(len(prs)), "Pull requests", None, search_url()),
+        ("merged", str(len(merged_prs)), "Merged", "pu", search_url("is:merged")),
+        ("open", str(len(open_prs)), "Open", "gr", search_url("is:open")),
+        ("repos", str(len(repos)), "Repositories", None, SEE_ALL + "#repos"),
+        ("stars", short(total_stars), "Stars on those repos", None, SEE_ALL + "#repos"),
+    ]
+    md.append("<p>\n" + "\n".join(
+        link(url, tile(f"stat-{key.lower()}.svg", val, lab, ck), f"{lab}: {val}", 'width="19%"')
+        for key, val, lab, ck, url in tiles) + "\n</p>")
 
-    more = len(repos) - len(top)
-    md.append(f'<img src="{heading("repos-title.svg", "Repos I have contributed to", f"{len(repos)} repos")}" width="100%" alt="Repos I have contributed to" />')
-    cards = []
-    for i, r in enumerate(top):
-        cards.append(f'<a href="https://github.com/{r["name"]}/pulls?q=is%3Apr+author%3A{USER}">'
-                     f'<img src="{repo_card(f"repo-{i}.svg", r, i)}" width="49%" alt="{escape(r["name"])}" /></a>')
-    md.append("<p>\n" + "\n".join(cards) + "\n</p>")
-    bpath, _ = button("see-all-repos.svg", f"See all {len(repos)} repos" if more > 0 else "See all repos")
-    md.append(f'<a href="{see_all}#repos"><img src="{bpath}" height="36" alt="See all repos" /></a>')
+    if merged_prs:
+        md.append(link(search_url("is:merged"), header("h-merged.svg", "Merged"), "Merged", 'width="100%"'))
+        md.append("<br>\n".join(link(p["html_url"], pr_row(f"merged-{i}.svg", p), p["title"], 'width="100%"')
+                                for i, p in enumerate(merged_prs[:MAX_MERGED])))
 
-    md.append(f'<img src="{heading("prs-title.svg", "Recent pull requests", f"{len(prs)} total")}" width="100%" alt="Recent pull requests" />')
-    rows = []
-    for i, p in enumerate(recent):
-        rows.append(f'<a href="{p["html_url"]}"><img src="{pr_row(f"pr-{i}.svg", p, i)}" width="100%" alt="{escape(p["title"])}" /></a>')
-    md.append("\n".join(rows) if rows else "_No pull requests yet._")
-    bpath, _ = button("see-all-prs.svg", f"See all {len(prs)} pull requests")
-    md.append(f'<a href="{see_all}#pull-requests"><img src="{bpath}" height="36" alt="See all pull requests" /></a>')
-    md.append(f"<sub>Last updated: {today} · updates automatically every day</sub>")
+    md.append(link(SEE_ALL + "#repos", header("h-repos.svg", "Repositories", f"See all {len(repos)} repositories"),
+                   f"Repositories: see all {len(repos)}", 'width="100%"'))
+    md.append("<p>\n" + "\n".join(link(f"https://github.com/{r['name']}", repo_card(f"repo-{i}.svg", r), r["name"],
+                                       'width="32%"') for i, r in enumerate(top)) + "\n</p>")
+
+    recent = open_prs[:RECENT]
+    if recent:
+        md.append(link(SEE_ALL + "#pull-requests", header("h-recent.svg", "Recent", f"See all {len(prs)} pull requests"),
+                       f"Recent: see all {len(prs)} pull requests", 'width="100%"'))
+        md.append("<br>\n".join(link(p["html_url"], pr_row(f"recent-{i}.svg", p), p["title"], 'width="100%"')
+                                for i, p in enumerate(recent)))
+    md.append(f'<p align="right"><sub>Updated daily · last update {today}</sub></p>')
     section = "\n\n".join(md)
 
     with open("README.md", encoding="utf-8") as f:
         readme = f.read()
     block = f"<!--CONTRIB:START-->\n{section}\n<!--CONTRIB:END-->"
-    if "<!--CONTRIB:START-->" in readme:
-        readme = re.sub(r"<!--CONTRIB:START-->.*?<!--CONTRIB:END-->", lambda m: block, readme, flags=re.S)
-    else:
-        readme = re.sub(r'\n*<img src="\./contributions\.svg"[^>]*/>\n*', "\n", readme).rstrip() + "\n\n" + block + "\n"
+    readme = re.sub(r"<!--CONTRIB:START-->.*?<!--CONTRIB:END-->", lambda m: block, readme, flags=re.S)
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(readme)
 
-    full = [f"# Open Source Contributions\n",
+    full = ["# Contributions\n",
             f"Pull requests by [@{USER}](https://github.com/{USER}) to other people's repositories. "
             f"Updated automatically every day. Last updated: {today}.\n",
-            f"**{merged}** merged · **{open_}** open · **{len(prs)}** total · **{len(repos)}** repos\n",
-            "## Repos\n", "| Repo | Stars | PRs | Merged | Open |", "|---|---|---|---|---|"]
+            f"**{len(prs)}** pull requests · **{len(merged_prs)}** merged · **{len(open_prs)}** open · "
+            f"**{len(repos)}** repos · **{short(total_stars)}** stars on those repos\n",
+            "## Repos\n", "| Repo | Language | Stars | PRs | Merged | Open |", "|---|---|---|---|---|---|"]
     for r in sorted(repos.values(), key=lambda r: -r["stars"]):
-        full.append(f"| [{r['name']}](https://github.com/{r['name']}) | ★ {short(r['stars'])} | "
+        full.append(f"| [{r['name']}](https://github.com/{r['name']}) | {r['lang'] or '–'} | ★ {short(r['stars'])} | "
                     f"[{r['prs']}](https://github.com/{r['name']}/pulls?q=is%3Apr+author%3A{USER}) | {r['merged']} | {r['open']} |")
-    full += ["\n## Pull requests\n", "| Status | Pull request | Repo | Date |", "|---|---|---|---|"]
+    full += ["\n## Pull requests\n", "| Status | Pull request | Type | Repo | Date |", "|---|---|---|---|---|"]
     for p in sorted(prs, key=lambda p: p["created_at"], reverse=True):
-        st = "🟣 Merged" if p["merged"] else ("🟢 Open" if p["state"] == "open" else "🔴 Closed")
+        st = "🟣 Merged" if p["merged"] else ("🟢 Open" if p["state"] == "open" else "⚪ Closed")
         title = p["title"].replace("|", "\\|")
-        full.append(f"| {st} | [{title}]({p['html_url']}) | [{p['repo']}](https://github.com/{p['repo']}) | {day(p['created_at'])} |")
+        full.append(f"| {st} | [{title}]({p['html_url']}) #{p['number']} | {label_and_title(p['title'])[0] or '–'} | "
+                    f"[{p['repo']}](https://github.com/{p['repo']}) | {day(p['created_at'])} |")
     full.append(f"\n[← Back to profile](https://github.com/{USER})\n")
     with open("CONTRIBUTIONS.md", "w", encoding="utf-8") as f:
         f.write("\n".join(full))
-    print(f"{len(prs)} PRs, {merged} merged, {open_} open, {len(repos)} repos")
+    print(f"{len(prs)} PRs, {len(merged_prs)} merged, {len(open_prs)} open, {len(repos)} repos, {total_stars} stars")
 
 
 if __name__ == "__main__":
