@@ -79,13 +79,47 @@ def T(x, y, s, size, color=TXT, weight=400, anchor="start"):
             f'text-anchor="{anchor}">{escape(str(s))}</text>')
 
 
-def save(name, w, h, body, bg=True):
+CSS = (
+    "@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}"
+    "@keyframes left{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}"
+    "@keyframes pop{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}"
+    "@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}"
+    "@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}"
+    "@keyframes flash{0%,99%{opacity:1}100%{opacity:0}}"
+    "@keyframes stay{to{opacity:1}}"
+    ".fx{transform-box:fill-box;transform-origin:center}"
+    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.fx,.fin{opacity:1!important}.num{display:none}}"
+)
+
+
+def anim(name, dur, delay=0, extra="ease-out", count="1", fill="both"):
+    return f'style="animation:{name} {dur}s {extra} {delay:.2f}s {count} {fill}"'
+
+
+def save(name, w, h, body, bg=True, enter="up", delay=0.0):
     rect = f'<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="8" fill="{CARD}" stroke="{BOR}"/>' if bg else ""
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
-           f'font-family="{FONT}">{rect}{body}</svg>')
+           f'font-family="{FONT}"><style>{CSS}</style>'
+           f'<g class="fx" {anim(enter, 0.6, delay)}>{rect}{body}</g></svg>')
     with open(f"{DIR}/{name}", "w", encoding="utf-8") as f:
         f.write(svg)
     return f"{DIR}/{name}"
+
+
+def count_up(x, y, val, size, color, weight=700, anchor="middle", start=0.4, total=0.9):
+    """Number that counts 0 -> val. Falls back to a plain number for big values."""
+    if not isinstance(val, int) or val > 60 or val < 1:
+        return T(x, y, val, size, color, weight, anchor)
+    step = total / (val + 1)
+    out = []
+    for k in range(val + 1):
+        last = k == val
+        st = (f'style="opacity:0;animation:{"stay" if last else "flash"} {step if not last else 0.01:.3f}s linear '
+              f'{start + k * step:.3f}s 1 forwards"')
+        cls = "fin" if last else "num"
+        out.append(f'<text class="{cls}" {st} x="{x}" y="{y}" font-size="{size}" fill="{color}" '
+                   f'font-weight="{weight}" text-anchor="{anchor}">{k}</text>')
+    return "".join(out)
 
 
 def heading(name, title, right=""):
@@ -95,44 +129,55 @@ def heading(name, title, right=""):
     return save(name, 1000, 56, body, bg=False)
 
 
-def badge(name, label, val, col):
+def badge(name, label, val, col, i=0):
     lw, vw = len(label) * 8.6 + 24, len(str(val)) * 8.6 + 24
     w = int(lw + vw)
     body = (f'<clipPath id="r"><rect width="{w}" height="28" rx="4"/></clipPath><g clip-path="url(#r)">'
             f'<rect width="{lw}" height="28" fill="#555"/><rect x="{lw}" width="{vw}" height="28" fill="{col}"/></g>'
-            + T(lw / 2, 19, label, 11, "#fff", 700, "middle") + T(lw + vw / 2, 19, val, 11, "#fff", 700, "middle"))
-    return save(name, w, 28, body, bg=False), w
+            + T(lw / 2, 19, label, 11, "#fff", 700, "middle")
+            + count_up(lw + vw / 2, 19, val, 11, "#fff", start=0.35 + i * 0.12))
+    return save(name, w, 28, body, bg=False, enter="pop", delay=i * 0.12), w
 
 
-def repo_card(name, r):
+def repo_card(name, r, i=0):
     w, h = 490, 84
+    d = i * 0.12
     owner, rn = r["name"].split("/")
     body = f'<clipPath id="c"><circle cx="40" cy="42" r="22"/></clipPath>'
-    body += (f'<image href="{r["img"]}" x="18" y="20" width="44" height="44" clip-path="url(#c)"/>' if r.get("img")
-             else f'<circle cx="40" cy="42" r="22" fill="{BOR}"/>')
+    av = (f'<image href="{r["img"]}" x="18" y="20" width="44" height="44" clip-path="url(#c)"/>' if r.get("img")
+          else f'<circle cx="40" cy="42" r="22" fill="{BOR}"/>')
+    body += f'<g class="fx" {anim("pop", 0.5, d + 0.25)}>{av}</g>'
     body += (f'<text x="76" y="36" font-size="13" fill="{MUT}">{escape(clip(owner, 16))} / '
              f'<tspan font-size="14" fill="{BLU}" font-weight="700">{escape(clip(rn, 22))}</tspan></text>')
-    body += T(76, 64, f"★ {short(r['stars'])}", 13, YEL)
-    body += T(76 + (len(short(r["stars"])) + 2) * 8 + 18, 64, f"{r['prs']} PR{'s' if r['prs'] > 1 else ''}", 13, MUT)
+    sx = 76 + (len(short(r["stars"])) + 2) * 8 + 18
+    body += f'<g class="fx" {anim("pulse", 2.4, d + 1, "ease-in-out", "infinite", "none")}>' + T(76, 64, "★", 13, YEL) + "</g>"
+    body += T(90, 64, short(r["stars"]), 13, YEL)
+    body += T(sx, 64, f"{r['prs']} PR{'s' if r['prs'] > 1 else ''}", 13, MUT)
     tag, col = (f"{r['merged']} merged", PUR) if r["merged"] else (("open", GRN) if r["open"] else ("closed", MUT))
     pw = len(tag) * 8 + 22
-    body += f'<rect x="{w-18-pw}" y="28" width="{pw}" height="26" rx="13" fill="none" stroke="{col}"/>'
-    body += T(w - 18 - pw / 2, 46, tag, 12, col, 700, "middle")
-    return save(name, w, h, body)
+    body += (f'<g class="fx" {anim("pop", 0.5, d + 0.45)}>'
+             f'<rect x="{w-18-pw}" y="28" width="{pw}" height="26" rx="13" fill="none" stroke="{col}"/>'
+             + T(w - 18 - pw / 2, 46, tag, 12, col, 700, "middle") + "</g>")
+    return save(name, w, h, body, delay=d)
 
 
-def pr_row(name, p):
+def pr_row(name, p, i=0):
     w, h = 1000, 48
+    d = i * 0.08
     st, col, sym = ("Merged", PUR, "◆") if p["merged"] else (("Open", GRN, "●") if p["state"] == "open" else ("Closed", RED, "✕"))
-    body = (T(18, 30, f"{sym} {st}", 13, col, 700) + T(140, 30, clip(p["title"], 54), 13, BLU)
+    dot = T(18, 30, sym, 13, col, 700)
+    if st == "Open":
+        dot = f'<g class="fx" {anim("pulse", 1.8, d + 0.8, "ease-in-out", "infinite", "none")}>{dot}</g>'
+    body = (dot + T(36, 30, st, 13, col, 700) + T(140, 30, clip(p["title"], 54), 13, BLU)
             + T(610, 30, clip(p["repo"], 30), 12, MUT) + T(982, 30, day(p["created_at"]), 12, MUT, anchor="end"))
-    return save(name, w, h, body)
+    return save(name, w, h, body, enter="left", delay=d)
 
 
 def button(name, label):
-    w = int(len(label) * 8 + 40)
-    body = T(w / 2, 23, label, 13, BLU, 700, "middle")
-    return save(name, w, 36, body), w
+    w = int(len(label) * 8 + 56)
+    body = T(20, 23, label, 13, BLU, 700)
+    body += f'<g class="fx" {anim("nudge", 1.4, 1, "ease-in-out", "infinite", "none")}>' + T(w - 22, 23, "→", 14, BLU, 700, "end") + "</g>"
+    return save(name, w, 36, body, delay=0.2), w
 
 
 def main():
@@ -178,7 +223,7 @@ def main():
             ("OPEN PRS", open_, GRN, search_url("is:open")),
             ("REPOS", len(repos), BLU, see_all),
             ("TOTAL PRS", len(prs), "#6e7681", search_url())]):
-        path, w = badge(f"badge-{i}.svg", label, val, col)
+        path, w = badge(f"badge-{i}.svg", label, val, col, i)
         links.append(f'<a href="{url}"><img src="{path}" height="28" alt="{label}: {val}" /></a>')
     md.append("<p>\n" + "\n".join(links) + "\n</p>")
 
@@ -187,17 +232,17 @@ def main():
     cards = []
     for i, r in enumerate(top):
         cards.append(f'<a href="https://github.com/{r["name"]}/pulls?q=is%3Apr+author%3A{USER}">'
-                     f'<img src="{repo_card(f"repo-{i}.svg", r)}" width="49%" alt="{escape(r["name"])}" /></a>')
+                     f'<img src="{repo_card(f"repo-{i}.svg", r, i)}" width="49%" alt="{escape(r["name"])}" /></a>')
     md.append("<p>\n" + "\n".join(cards) + "\n</p>")
-    bpath, _ = button("see-all-repos.svg", f"See all {len(repos)} repos →" if more > 0 else "See all repos →")
+    bpath, _ = button("see-all-repos.svg", f"See all {len(repos)} repos" if more > 0 else "See all repos")
     md.append(f'<a href="{see_all}#repos"><img src="{bpath}" height="36" alt="See all repos" /></a>')
 
     md.append(f'<img src="{heading("prs-title.svg", "Recent pull requests", f"{len(prs)} total")}" width="100%" alt="Recent pull requests" />')
     rows = []
     for i, p in enumerate(recent):
-        rows.append(f'<a href="{p["html_url"]}"><img src="{pr_row(f"pr-{i}.svg", p)}" width="100%" alt="{escape(p["title"])}" /></a>')
+        rows.append(f'<a href="{p["html_url"]}"><img src="{pr_row(f"pr-{i}.svg", p, i)}" width="100%" alt="{escape(p["title"])}" /></a>')
     md.append("\n".join(rows) if rows else "_No pull requests yet._")
-    bpath, _ = button("see-all-prs.svg", f"See all {len(prs)} pull requests →")
+    bpath, _ = button("see-all-prs.svg", f"See all {len(prs)} pull requests")
     md.append(f'<a href="{see_all}#pull-requests"><img src="{bpath}" height="36" alt="See all pull requests" /></a>')
     md.append(f"<sub>Last updated: {today} · updates automatically every day</sub>")
     section = "\n\n".join(md)
