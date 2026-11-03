@@ -1464,11 +1464,15 @@
     {
       "date": "2026-11-02",
       "level": 3
+    },
+    {
+      "date": "2026-11-03",
+      "level": 2
     }
   ],
   "stats": {
-    "current_streak": 5,
-    "longest_streak": 5,
-    "active_days": 20
+    "current_streak": 6,
+    "longest_streak": 6,
+    "active_days": 21
   }
 }
