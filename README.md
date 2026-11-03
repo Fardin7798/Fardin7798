@@ -19,3 +19,5 @@ I design in Figma and build frontends in Flutter and Next.js. Co-Founder of Isla
 ## Databases & Dev Tools
 
 <img src="https://skillicons.dev/icons?i=postgres,docker,git,github,vscode,androidstudio,gradle,vercel" /> <br /><br />
+
+<img src="./contributions.svg" width="100%" alt="Open source contributions" />
