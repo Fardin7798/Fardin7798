@@ -11,12 +11,12 @@ Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's 
 | [abi/screenshot-to-code](https://github.com/abi/screenshot-to-code) | Python | ★ 81.0k | [1](https://github.com/abi/screenshot-to-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | TypeScript | ★ 70.6k | [1](https://github.com/remotion-dev/remotion/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | Python | ★ 66.3k | [2](https://github.com/Alishahryar1/free-claude-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 54.8k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 54.9k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) | TypeScript | ★ 42.1k | [1](https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [Billionmail/BillionMail](https://github.com/Billionmail/BillionMail) | Go | ★ 16.2k | [1](https://github.com/Billionmail/BillionMail/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 13.6k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 13.9k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [is-a-dev/register](https://github.com/is-a-dev/register) | JavaScript | ★ 11.7k | [1](https://github.com/is-a-dev/register/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
-| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 9.4k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 9.7k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [JetBrains/thinkrail](https://github.com/JetBrains/thinkrail) | TypeScript | ★ 7.5k | [1](https://github.com/JetBrains/thinkrail/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [beenuar/AiSOC](https://github.com/beenuar/AiSOC) | Python | ★ 7.1k | [1](https://github.com/beenuar/AiSOC/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [code-charity/youtube](https://github.com/code-charity/youtube) | JavaScript | ★ 4.7k | [1](https://github.com/code-charity/youtube/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
