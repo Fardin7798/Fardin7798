@@ -1,32 +1,32 @@
 # Contributions
 
-Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's repositories. Updated automatically every day. Last updated: 7 Nov 2026.
+Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's repositories. Updated automatically every day. Last updated: 8 Nov 2026.
 
-**31** pull requests · **9** merged · **18** open · **29** repos · **1028k** stars on those repos
+**31** pull requests · **9** merged · **17** open · **29** repos · **1033k** stars on those repos
 
 ## Repos
 
 | Repo | Language | Stars | PRs | Merged | Open |
 |---|---|---|---|---|---|
-| [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Python | ★ 144k | [1](https://github.com/Graphify-Labs/graphify/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Python | ★ 144k | [1](https://github.com/Graphify-Labs/graphify/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
 | [abi/screenshot-to-code](https://github.com/abi/screenshot-to-code) | Python | ★ 81.1k | [1](https://github.com/abi/screenshot-to-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [hoppscotch/hoppscotch](https://github.com/hoppscotch/hoppscotch) | TypeScript | ★ 80.8k | [1](https://github.com/hoppscotch/hoppscotch/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | TypeScript | ★ 71.4k | [1](https://github.com/remotion-dev/remotion/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | TypeScript | ★ 71.6k | [1](https://github.com/remotion-dev/remotion/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [chartjs/Chart.js](https://github.com/chartjs/Chart.js) | JavaScript | ★ 67.8k | [1](https://github.com/chartjs/Chart.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | Python | ★ 67.1k | [2](https://github.com/Alishahryar1/free-claude-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [HKUDS/DeepTutor](https://github.com/HKUDS/DeepTutor) | Python | ★ 56.1k | [1](https://github.com/HKUDS/DeepTutor/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 55.2k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | Python | ★ 67.3k | [2](https://github.com/Alishahryar1/free-claude-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [HKUDS/DeepTutor](https://github.com/HKUDS/DeepTutor) | Python | ★ 56.6k | [1](https://github.com/HKUDS/DeepTutor/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 55.3k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [pixijs/pixijs](https://github.com/pixijs/pixijs) | TypeScript | ★ 48.6k | [1](https://github.com/pixijs/pixijs/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [AstrBotDevs/AstrBot](https://github.com/AstrBotDevs/AstrBot) | Python | ★ 46.3k | [1](https://github.com/AstrBotDevs/AstrBot/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) | TypeScript | ★ 42.5k | [1](https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [AstrBotDevs/AstrBot](https://github.com/AstrBotDevs/AstrBot) | Python | ★ 46.4k | [1](https://github.com/AstrBotDevs/AstrBot/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) | TypeScript | ★ 42.7k | [1](https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [vuetifyjs/vuetify](https://github.com/vuetifyjs/vuetify) | TypeScript | ★ 41.0k | [1](https://github.com/vuetifyjs/vuetify/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [videojs/video.js](https://github.com/videojs/video.js) | TypeScript | ★ 40.1k | [1](https://github.com/videojs/video.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [reflex-dev/reflex](https://github.com/reflex-dev/reflex) | Python | ★ 29.0k | [1](https://github.com/reflex-dev/reflex/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 21.5k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [xtermjs/xterm.js](https://github.com/xtermjs/xterm.js) | TypeScript | ★ 21.3k | [1](https://github.com/xtermjs/xterm.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 19.1k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
-| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 18.4k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 19.2k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [Billionmail/BillionMail](https://github.com/Billionmail/BillionMail) | Go | ★ 16.2k | [1](https://github.com/Billionmail/BillionMail/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [puckeditor/puck](https://github.com/puckeditor/puck) | TypeScript | ★ 13.6k | [1](https://github.com/puckeditor/puck/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [puckeditor/puck](https://github.com/puckeditor/puck) | TypeScript | ★ 13.7k | [1](https://github.com/puckeditor/puck/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [vega/vega](https://github.com/vega/vega) | JavaScript | ★ 12.0k | [1](https://github.com/vega/vega/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [is-a-dev/register](https://github.com/is-a-dev/register) | JavaScript | ★ 11.8k | [1](https://github.com/is-a-dev/register/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
 | [spyder-ide/spyder](https://github.com/spyder-ide/spyder) | Python | ★ 9.4k | [1](https://github.com/spyder-ide/spyder/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
@@ -50,7 +50,7 @@ Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's 
 | 🟣 Merged | [Fixed OpenAI-compatible translator failing with HTTP 400 on endpoints that reject chat_template_kwargs](https://github.com/morpheus65535/bazarr/pull/3711) #3711 | – | [morpheus65535/bazarr](https://github.com/morpheus65535/bazarr) | 6 Nov 2026 |
 | 🟢 Open | [fix: refresh a container's subtree when cacheAsTexture is turned off](https://github.com/pixijs/pixijs/pull/12367) #12367 | Fix | [pixijs/pixijs](https://github.com/pixijs/pixijs) | 6 Nov 2026 |
 | 🟢 Open | [fix(ingest): keep ProcessLock exclusive when a contender fails](https://github.com/crocodilestick/Calibre-Web-Automated/pull/1659) #1659 | Fix | [crocodilestick/Calibre-Web-Automated](https://github.com/crocodilestick/Calibre-Web-Automated) | 6 Nov 2026 |
-| 🟢 Open | [fix(extract): make ambiguous Python import placeholder ids independent of the checkout path](https://github.com/Graphify-Labs/graphify/pull/5045) #5045 | Fix | [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | 6 Nov 2026 |
+| ⚪ Closed | [fix(extract): make ambiguous Python import placeholder ids independent of the checkout path](https://github.com/Graphify-Labs/graphify/pull/5045) #5045 | Fix | [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | 6 Nov 2026 |
 | 🟢 Open | [fix: align inner tick labels inwards on reversed linear axes](https://github.com/chartjs/Chart.js/pull/12379) #12379 | Fix | [chartjs/Chart.js](https://github.com/chartjs/Chart.js) | 6 Nov 2026 |
 | 🟣 Merged | [PR: Restore Go to line item in the Search menu (Editor)](https://github.com/spyder-ide/spyder/pull/26499) #26499 | – | [spyder-ide/spyder](https://github.com/spyder-ide/spyder) | 5 Nov 2026 |
 | 🟢 Open | [fix: handle the complete upload response once it loads](https://github.com/reflex-dev/reflex/pull/7744) #7744 | Fix | [reflex-dev/reflex](https://github.com/reflex-dev/reflex) | 5 Nov 2026 |
