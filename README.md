@@ -30,7 +30,7 @@ Fixes and features for open-source projects I use.
 <a href="https://github.com/search?q=author%3AFardin7798+is%3Apr+-user%3AFardin7798+is%3Amerged&type=pullrequests&s=created&o=desc"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/stat-merged.svg" /><img src="contrib/light/stat-merged.svg" width="19%" alt="Merged: 9" /></picture></a>
 <a href="https://github.com/search?q=author%3AFardin7798+is%3Apr+-user%3AFardin7798+is%3Aopen&type=pullrequests&s=created&o=desc"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/stat-open.svg" /><img src="contrib/light/stat-open.svg" width="19%" alt="Open: 17" /></picture></a>
 <a href="./CONTRIBUTIONS.md#repos"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/stat-repos.svg" /><img src="contrib/light/stat-repos.svg" width="19%" alt="Repositories: 29" /></picture></a>
-<a href="./CONTRIBUTIONS.md#repos"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/stat-stars.svg" /><img src="contrib/light/stat-stars.svg" width="19%" alt="Stars on those repos: 1043k" /></picture></a>
+<a href="./CONTRIBUTIONS.md#repos"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/stat-stars.svg" /><img src="contrib/light/stat-stars.svg" width="19%" alt="Stars on those repos: 1049k" /></picture></a>
 </p>
 
 <a href="https://github.com/search?q=author%3AFardin7798+is%3Apr+-user%3AFardin7798+is%3Amerged&type=pullrequests&s=created&o=desc"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/h-merged.svg" /><img src="contrib/light/h-merged.svg" width="100%" alt="Merged" /></picture></a>
@@ -54,5 +54,5 @@ Fixes and features for open-source projects I use.
 <a href="https://github.com/puckeditor/puck/pull/1903"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/recent-2.svg" /><img src="contrib/light/recent-2.svg" width="100%" alt="fix: handle document pointer targets while dragging in Firefox" /></picture></a><br>
 <a href="https://github.com/xtermjs/xterm.js/pull/6301"><picture><source media="(prefers-color-scheme: dark)" srcset="contrib/dark/recent-3.svg" /><img src="contrib/light/recent-3.svg" width="100%" alt="Keep hovered link when unrelated rows re-render" /></picture></a>
 
-<p align="right"><sub>Updated daily · last update 10 Nov 2026</sub></p>
+<p align="right"><sub>Updated daily · last update 11 Nov 2026</sub></p>
 <!--CONTRIB:END-->

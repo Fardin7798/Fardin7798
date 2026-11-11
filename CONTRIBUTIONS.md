@@ -1,37 +1,37 @@
 # Contributions
 
-Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's repositories. Updated automatically every day. Last updated: 10 Nov 2026.
+Pull requests by [@Fardin7798](https://github.com/Fardin7798) to other people's repositories. Updated automatically every day. Last updated: 11 Nov 2026.
 
-**31** pull requests · **9** merged · **17** open · **29** repos · **1043k** stars on those repos
+**31** pull requests · **9** merged · **17** open · **29** repos · **1049k** stars on those repos
 
 ## Repos
 
 | Repo | Language | Stars | PRs | Merged | Open |
 |---|---|---|---|---|---|
-| [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Python | ★ 145k | [1](https://github.com/Graphify-Labs/graphify/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
-| [abi/screenshot-to-code](https://github.com/abi/screenshot-to-code) | Python | ★ 81.1k | [1](https://github.com/abi/screenshot-to-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify) | Python | ★ 146k | [1](https://github.com/Graphify-Labs/graphify/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
+| [abi/screenshot-to-code](https://github.com/abi/screenshot-to-code) | Python | ★ 81.2k | [1](https://github.com/abi/screenshot-to-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [hoppscotch/hoppscotch](https://github.com/hoppscotch/hoppscotch) | TypeScript | ★ 80.8k | [1](https://github.com/hoppscotch/hoppscotch/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | TypeScript | ★ 72.1k | [1](https://github.com/remotion-dev/remotion/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | Python | ★ 67.8k | [2](https://github.com/Alishahryar1/free-claude-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | TypeScript | ★ 72.4k | [1](https://github.com/remotion-dev/remotion/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [Alishahryar1/free-claude-code](https://github.com/Alishahryar1/free-claude-code) | Python | ★ 68.4k | [2](https://github.com/Alishahryar1/free-claude-code/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [chartjs/Chart.js](https://github.com/chartjs/Chart.js) | JavaScript | ★ 67.8k | [1](https://github.com/chartjs/Chart.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [HKUDS/DeepTutor](https://github.com/HKUDS/DeepTutor) | Python | ★ 57.8k | [1](https://github.com/HKUDS/DeepTutor/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 55.5k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [HKUDS/DeepTutor](https://github.com/HKUDS/DeepTutor) | Python | ★ 58.1k | [1](https://github.com/HKUDS/DeepTutor/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [multica-ai/multica](https://github.com/multica-ai/multica) | Go | ★ 55.7k | [1](https://github.com/multica-ai/multica/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [pixijs/pixijs](https://github.com/pixijs/pixijs) | TypeScript | ★ 48.7k | [1](https://github.com/pixijs/pixijs/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [AstrBotDevs/AstrBot](https://github.com/AstrBotDevs/AstrBot) | Python | ★ 46.6k | [1](https://github.com/AstrBotDevs/AstrBot/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) | TypeScript | ★ 43.1k | [1](https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [AstrBotDevs/AstrBot](https://github.com/AstrBotDevs/AstrBot) | Python | ★ 46.7k | [1](https://github.com/AstrBotDevs/AstrBot/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [Crosstalk-Solutions/project-nomad](https://github.com/Crosstalk-Solutions/project-nomad) | TypeScript | ★ 43.2k | [1](https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [vuetifyjs/vuetify](https://github.com/vuetifyjs/vuetify) | TypeScript | ★ 41.0k | [1](https://github.com/vuetifyjs/vuetify/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
-| [videojs/video.js](https://github.com/videojs/video.js) | TypeScript | ★ 40.1k | [1](https://github.com/videojs/video.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
+| [videojs/video.js](https://github.com/videojs/video.js) | TypeScript | ★ 40.2k | [1](https://github.com/videojs/video.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [reflex-dev/reflex](https://github.com/reflex-dev/reflex) | Python | ★ 29.0k | [1](https://github.com/reflex-dev/reflex/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 25.4k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [storytold/craft-anything](https://github.com/storytold/craft-anything) | Rust | ★ 27.5k | [2](https://github.com/storytold/craft-anything/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 21.7k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [xtermjs/xterm.js](https://github.com/xtermjs/xterm.js) | TypeScript | ★ 21.3k | [1](https://github.com/xtermjs/xterm.js/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
-| [vercel-labs/agent-desktop](https://github.com/vercel-labs/agent-desktop) | Rust | ★ 21.0k | [1](https://github.com/vercel-labs/agent-desktop/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [Billionmail/BillionMail](https://github.com/Billionmail/BillionMail) | Go | ★ 16.2k | [1](https://github.com/Billionmail/BillionMail/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [puckeditor/puck](https://github.com/puckeditor/puck) | TypeScript | ★ 13.7k | [1](https://github.com/puckeditor/puck/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [vega/vega](https://github.com/vega/vega) | JavaScript | ★ 12.0k | [1](https://github.com/vega/vega/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [is-a-dev/register](https://github.com/is-a-dev/register) | JavaScript | ★ 11.8k | [1](https://github.com/is-a-dev/register/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 0 |
 | [spyder-ide/spyder](https://github.com/spyder-ide/spyder) | Python | ★ 9.4k | [1](https://github.com/spyder-ide/spyder/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
-| [JetBrains/thinkrail](https://github.com/JetBrains/thinkrail) | TypeScript | ★ 8.1k | [1](https://github.com/JetBrains/thinkrail/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
-| [beenuar/AiSOC](https://github.com/beenuar/AiSOC) | Python | ★ 7.0k | [1](https://github.com/beenuar/AiSOC/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [JetBrains/thinkrail](https://github.com/JetBrains/thinkrail) | TypeScript | ★ 8.2k | [1](https://github.com/JetBrains/thinkrail/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
+| [beenuar/AiSOC](https://github.com/beenuar/AiSOC) | Python | ★ 7.2k | [1](https://github.com/beenuar/AiSOC/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [crocodilestick/Calibre-Web-Automated](https://github.com/crocodilestick/Calibre-Web-Automated) | JavaScript | ★ 6.6k | [1](https://github.com/crocodilestick/Calibre-Web-Automated/pulls?q=is%3Apr+author%3AFardin7798) | 0 | 1 |
 | [code-charity/youtube](https://github.com/code-charity/youtube) | JavaScript | ★ 4.7k | [1](https://github.com/code-charity/youtube/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
 | [morpheus65535/bazarr](https://github.com/morpheus65535/bazarr) | Python | ★ 4.4k | [1](https://github.com/morpheus65535/bazarr/pulls?q=is%3Apr+author%3AFardin7798) | 1 | 0 |
