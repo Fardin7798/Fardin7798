@@ -1,6 +1,6 @@
 # About Me
 Hi, I'm Shaikh Fardin, a UI/UX designer and software developer from India.
-I design in Figma and build frontends in Flutter and Next.js. Co-Founder of Islamic Legacy.
+I design in Figma and build frontends in Flutter and Next.js. Founder CEO of Islamic Legacy.
 
 🔗 [LinkedIn](https://www.linkedin.com/in/shaikh-fardin) · [X](https://x.com/srkianfardin) · shaikhfardin206@gmail.com
 
